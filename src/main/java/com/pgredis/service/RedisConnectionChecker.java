@@ -14,16 +14,14 @@ public class RedisConnectionChecker {
         this.redisConnectionFactory = redisConnectionFactory;
     }
 
-    public boolean isRedisUp() {
+    public boolean isRedisConnected() {
         try {
-
-            redisConnectionFactory.getConnection().ping();
+            redisConnectionFactory.getConnection();
             return true;
         } catch (Exception e) {
-
-            e.printStackTrace();
             return false;
         }
     }
 }
+
 

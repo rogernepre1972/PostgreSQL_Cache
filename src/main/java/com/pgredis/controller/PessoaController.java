@@ -4,6 +4,7 @@ import com.pgredis.model.postgres.Pessoa;
 import com.pgredis.model.redis.PessoaCache;
 import com.pgredis.repository.PessoaCacheRepository;
 import com.pgredis.repository.PessoaRepository;
+import com.pgredis.service.RedisConnectionChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +15,20 @@ import java.util.Optional;
 @RequestMapping("/pessoas")
 public class PessoaController {
 
+    private RedisConnectionChecker redisConnectionChecker;
     @Autowired
     private PessoaRepository pessoaRepository;
 
     @Autowired
     private PessoaCacheRepository pessoaCacheRepository;
+
+    @Autowired
+    public PessoaController(RedisConnectionChecker redisConnectionChecker) {
+        this.redisConnectionChecker = redisConnectionChecker;
+    }
+
+    public PessoaController() {
+    }
 
     @PostMapping("/adicionar")
     public Pessoa adicionarPessoa(@RequestBody Pessoa pessoa) {
@@ -29,6 +39,7 @@ public class PessoaController {
 
     @GetMapping("/listar")
     public Iterable<Pessoa> listarPessoas() {
+
         List<Pessoa> pessoas = pessoaRepository.findAll();
         List<PessoaCache> pessoaCaches = pessoaCacheRepository.findAll();
         if (pessoaCaches.size() != pessoas.size()) {
