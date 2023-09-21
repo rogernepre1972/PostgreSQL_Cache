@@ -16,11 +16,11 @@ public class RedisConnectionChecker {
 
     public boolean isRedisUp() {
         try {
-            // Tenta obter uma conexão com o Redis
+
             redisConnectionFactory.getConnection().ping();
             return true;
         } catch (Exception e) {
-            // Lidar com erros de conexão
+
             e.printStackTrace();
             return false;
         }
